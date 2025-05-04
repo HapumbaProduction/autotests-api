@@ -6,14 +6,32 @@ from clients.api_client import APIClient
 from clients.private_http_builder import AuthenticationUserDict, get_private_http_client
 
 
+# Добавили описание структуры файла
+class File(TypedDict):
+    """
+    Описание структуры файла.
+    """
+    id: str
+    url: str
+    filename: str
+    directory: str
+
+
 class CreateFileRequestDict(TypedDict):
     """
     Описание структуры запроса на создание файла.
     """
-
     filename: str
     directory: str
     upload_file: str
+
+
+# Добавили описание структуры запроса на создание файла
+class CreateFileResponseDict(TypedDict):
+    """
+    Описание структуры ответа создания файла.
+    """
+    file: File
 
 
 class FilesClient(APIClient):
@@ -40,7 +58,7 @@ class FilesClient(APIClient):
         return self.post(
             "/api/v1/files",
             data=request,
-            files={"upload_file": open(request["upload_file"], "rb")},
+            files={"upload_file": open(request['upload_file'], 'rb')}
         )
 
     def delete_file_api(self, file_id: str) -> Response:
@@ -52,8 +70,12 @@ class FilesClient(APIClient):
         """
         return self.delete(f"/api/v1/files/{file_id}")
 
+    # Добавили новый метод
+    def create_file(self, request: CreateFileRequestDict) -> CreateFileResponseDict:
+        response = self.create_file_api(request)
+        return response.json()
 
-# Добавляем builder для FilesClient
+
 def get_files_client(user: AuthenticationUserDict) -> FilesClient:
     """
     Функция создаёт экземпляр FilesClient с уже настроенным HTTP-клиентом.
