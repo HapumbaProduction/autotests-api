@@ -3,6 +3,7 @@ from typing import TypedDict
 from httpx import Response
 
 from clients.api_client import APIClient
+from clients.private_http_builder import AuthenticationUserDict, get_private_http_client
 
 
 class Exercise(TypedDict):
@@ -19,12 +20,14 @@ class Exercise(TypedDict):
     description: str
     estimatedTime: str | None
 
+
 class GetExerciseResponseDict(TypedDict):
     """
     Описание структуры ответа получения задания.
     """
 
     exercise: Exercise
+
 
 class GetExercisesQueryDict(TypedDict):
     """
@@ -33,12 +36,14 @@ class GetExercisesQueryDict(TypedDict):
 
     courseId: str
 
+
 class GetExercisesResponseDict(TypedDict):
     """
     Описание структуры ответа на получение списка заданий.
     """
 
     exercises: list[Exercise]
+
 
 class CreateExerciseRequestDict(TypedDict):
     """
@@ -53,12 +58,14 @@ class CreateExerciseRequestDict(TypedDict):
     description: str
     estimatedTime: str | None
 
+
 class CreateExerciseResponseDict(TypedDict):
     """
     Описание структуры ответа на создание задания.
     """
 
     exercise: Exercise
+
 
 class UpdateExerciseRequestDict(TypedDict):
     """
@@ -72,12 +79,14 @@ class UpdateExerciseRequestDict(TypedDict):
     description: str | None
     estimatedTime: str | None
 
+
 class UpdateExerciseResponseDict(TypedDict):
     """
     Описание структуры ответа на обновление задания.
     """
 
     exercise: Exercise
+
 
 class ExercisesClient(APIClient):
     """
@@ -112,7 +121,7 @@ class ExercisesClient(APIClient):
         return self.post("/api/v1/exercises", json=request)
 
     def update_exercise_api(
-        self, exercise_id: str, request: UpdateExerciseRequestDict
+            self, exercise_id: str, request: UpdateExerciseRequestDict
     ) -> Response:
         """
         Метод обновления задания.
@@ -170,6 +179,7 @@ class ExercisesClient(APIClient):
         """
         response = self.update_exercise_api(exercise_id, request)
         return response.json()
+
 
 def get_exercises_client(user: AuthenticationUserDict) -> ExercisesClient:
     """
