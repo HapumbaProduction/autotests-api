@@ -12,11 +12,15 @@ class UserSchema(BaseModel):
     middle_name: str = Field(alias="middleName")
 
 
-class CreateUserRequestSchema(UserSchema):
+class CreateUserRequestSchema(BaseModel):
     """
     Описание структуры запроса на создание пользователя.
     """
+    email: EmailStr
     password: str
+    last_name: str = Field(alias="lastName")
+    first_name: str = Field(alias="firstName")
+    middle_name: str = Field(alias="middleName")
 
 
 class CreateUserResponseSchema(BaseModel):
