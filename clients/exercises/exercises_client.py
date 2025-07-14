@@ -4,7 +4,6 @@ from clients.api_client import APIClient
 from clients.exercises.exercises_schema import (
     CreateExerciseRequestSchema,
     CreateExerciseResponseSchema,
-    GetExercisePathSchema,
     GetExerciseResponseSchema,
     GetExercisesQuerySchema,
     GetExercisesResponseSchema,
@@ -34,7 +33,7 @@ class ExercisesClient(APIClient):
             params=query.model_dump(exclude=True, by_alias=True, exclude_unset=True),
         )
 
-    def get_exercise_api(self, exercise_id: GetExercisePathSchema) -> Response:
+    def get_exercise_api(self, exercise_id: str) -> Response:
         """
         Метод получения задания.
 
@@ -55,7 +54,7 @@ class ExercisesClient(APIClient):
         )
 
     def update_exercise_api(
-        self, exercise_id: GetExercisePathSchema, request: UpdateExerciseRequestSchema
+        self, exercise_id: str, request: UpdateExerciseRequestSchema
     ) -> Response:
         """
         Метод обновления задания.
@@ -78,9 +77,7 @@ class ExercisesClient(APIClient):
         """
         return self.delete(f"/api/v1/exercises/{exercise_id}")
 
-    def get_exercise(
-        self, exercise_id: GetExercisePathSchema
-    ) -> GetExerciseResponseSchema:
+    def get_exercise(self, exercise_id: str) -> GetExerciseResponseSchema:
         """
         Метод получения задания с преобразованием ответа.
 

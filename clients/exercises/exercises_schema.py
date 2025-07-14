@@ -18,14 +18,6 @@ class ExerciseSchema(BaseModel):
     estimated_time: str | None = Field(alias="estimatedTime")
 
 
-class GetExercisePathSchema(BaseModel):
-    """
-    Описание структуры запроса на получение задания.
-    """
-
-    exercise_id: str
-
-
 class GetExerciseResponseSchema(BaseModel):
     """
     Описание структуры ответа получения задания.
