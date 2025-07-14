@@ -18,6 +18,14 @@ class ExerciseSchema(BaseModel):
     estimated_time: str | None = Field(alias="estimatedTime")
 
 
+class GetExercisePathSchema(BaseModel):
+    """
+    Описание структуры запроса на получение задания.
+    """
+
+    exercise_id: str
+
+
 class GetExerciseResponseSchema(BaseModel):
     """
     Описание структуры ответа получения задания.
@@ -30,6 +38,8 @@ class GetExercisesQuerySchema(BaseModel):
     """
     Описание структуры запроса на получение списка заданий.
     """
+
+    model_config = ConfigDict(populate_by_name=True)
 
     course_id: str = Field(alias="courseId")
 
@@ -46,6 +56,8 @@ class CreateExerciseRequestSchema(BaseModel):
     """
     Описание структуры запроса на создание задания.
     """
+
+    model_config = ConfigDict(populate_by_name=True)
 
     title: str
     course_id: str = Field(alias="courseId")
@@ -68,6 +80,8 @@ class UpdateExerciseRequestSchema(BaseModel):
     """
     Описание структуры запроса на обновление задания.
     """
+
+    model_config = ConfigDict(populate_by_name=True)
 
     title: str | None
     max_score: int | None = Field(alias="maxScore")

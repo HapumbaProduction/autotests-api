@@ -25,7 +25,10 @@ class CoursesClient(APIClient):
         :param query: Словарь с userId.
         :return: Ответ от сервера в виде объекта httpx.Response
         """
-        return self.get("/api/v1/courses", params=query)
+        return self.get(
+            "/api/v1/courses",
+            params=query.model_dump(exclude=True, by_alias=True, exclude_unset=True),
+        )
 
     def get_course_api(self, course_id: str) -> Response:
         """
@@ -44,7 +47,9 @@ class CoursesClient(APIClient):
         previewFileId, createdByUserId.
         :return: Ответ от сервера в виде объекта httpx.Response
         """
-        return self.post("/api/v1/courses", json=request)
+        return self.post(
+            "/api/v1/courses", json=request.model_dump(mode="json", by_alias=True)
+        )
 
     def update_course_api(
         self, course_id: str, request: UpdateCourseRequestSchema
@@ -56,7 +61,10 @@ class CoursesClient(APIClient):
         :param request: Словарь с title, maxScore, minScore, description, estimatedTime.
         :return: Ответ от сервера в виде объекта httpx.Response
         """
-        return self.patch(f"/api/v1/courses/{course_id}", json=request)
+        return self.patch(
+            f"/api/v1/courses/{course_id}",
+            json=request.model_dump(mode="json", by_alias=True),
+        )
 
     def delete_course_api(self, course_id: str) -> Response:
         """
@@ -68,10 +76,10 @@ class CoursesClient(APIClient):
         return self.delete(f"/api/v1/courses/{course_id}")
 
     def create_course(
-        self, request: CreateCourseResponseSchema
+        self, request: CreateCourseRequestSchema
     ) -> CreateCourseResponseSchema:
         response = self.create_course_api(request)
-        return response.json()
+        return CreateCourseResponseSchema.model_validate_json(response.text)
 
 
 def get_courses_client(user: AuthenticationUserSchema) -> CoursesClient:
